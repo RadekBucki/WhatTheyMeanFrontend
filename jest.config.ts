@@ -4,10 +4,10 @@ const config: Config.InitialOptions = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: [
-    "<rootDir>/tests/setupTests.ts"
+    '<rootDir>/tests/setupTests.ts'
   ],
   moduleNameMapper: {
-    "^.+\\.svg$": "jest-svg-transformer",
+    '^.+\\.svg$': 'jest-svg-transformer',
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy', // Handle CSS files
   },
   transform: {
