@@ -1,0 +1,41 @@
+name: Build and Test
+
+on:
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 16.x, 18.x ]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run type check
+        run: npm run type-check
+
+      - name: Run lint check
+        run: npm run lint-check
+
+      - name: Build in production mode
+        run: npm run build -- --mode production
+
+      - name: Run unit tests
+        run: npm run test
