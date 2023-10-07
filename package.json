@@ -20,8 +20,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
-    "lint-check": "eslint --ext .js,.cjs,.ts,.tsx .",
-    "lint-fix": "eslint --ext .js,.cjs,.ts,.tsx . --fix",
+    "lint-check": "eslint --ext .js,.cjs,.ts,.tsx src/",
+    "lint-fix": "eslint --ext .js,.cjs,.ts,.tsx src/ --fix",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "test": "jest"
   },
@@ -29,11 +29,6 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ],
-    "ignorePatterns": [
-      "node_modules/",
-      "build/",
-      "dist/"
     ]
   },
   "browserslist": {
