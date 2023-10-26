@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Card, List, ListItem, ListItemPrefix, Typography} from '@material-tailwind/react';
 import {DocumentTextIcon} from '@heroicons/react/20/solid';
-import {ChartPieIcon} from "@heroicons/react/20/solid";
+import {ChartPieIcon} from '@heroicons/react/20/solid';
 import {SelectedWindow} from '../../Enums';
 import Transcribe from '../transcribe/Transcribe';
 import History from '../history/History';
@@ -20,7 +20,7 @@ export default function Home() {
           <ListItem onClick={() => {
             setSelectedWindow(SelectedWindow.Transcribe);
           }} className={`cursor-pointer ${
-            selectedWindow === SelectedWindow.Transcribe ? "bg-selected-blue focus:bg-selected-blue" : ""
+            selectedWindow === SelectedWindow.Transcribe ? 'bg-selected-blue focus:bg-selected-blue' : ''
           } hover:bg-teal active:bg-teal`}>
             <ListItemPrefix>
               <DocumentTextIcon className="h-5 w-5 text-off-white"/>
@@ -32,7 +32,7 @@ export default function Home() {
           <ListItem onClick={() => {
             setSelectedWindow(SelectedWindow.History);
           }}  className={`cursor-pointer ${
-            selectedWindow === SelectedWindow.History ? "bg-selected-blue focus:bg-selected-blue" : ""
+            selectedWindow === SelectedWindow.History ? 'bg-selected-blue focus:bg-selected-blue' : ''
           } hover:bg-teal active:bg-teal`}>
             <ListItemPrefix>
               <ChartPieIcon className="h-5 w-5 text-off-white"/>
