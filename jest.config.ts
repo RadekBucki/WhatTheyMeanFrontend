@@ -1,4 +1,4 @@
-import type { Config } from '@jest/types';
+import type {Config} from '@jest/types';
 
 const config: Config.InitialOptions = {
   preset: 'ts-jest',
@@ -14,5 +14,4 @@ const config: Config.InitialOptions = {
     '^.+\\.(ts|tsx)$': 'ts-jest', // Handle TypeScript files
   },
 };
-
 export default config;
