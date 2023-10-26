@@ -6,7 +6,18 @@ module.exports = withMT({
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    colors: {
+      'dark-blue': '#151E3F',
+      'teal': '#2EC4B6',
+      'bright-pink': '#FF3366',
+      'off-white': '#F6F7F8',
+      'selected-blue': '#030027'
+    },
+    extend: {
+      width: {
+        'custom': 'calc(100vw - 320px)',
+      },
+    },
   },
   plugins: [],
 });
