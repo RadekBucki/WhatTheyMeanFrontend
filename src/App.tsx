@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Button } from "@material-tailwind/react";
 
 function App() {
   return (
@@ -10,6 +11,11 @@ function App() {
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
+
+        <h1 className="text-3xl font-bold underline">
+          Hello world!
+        </h1>
+        <Button>Button</Button>
         <a
           className="App-link"
           href="https://reactjs.org"
