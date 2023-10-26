@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
 export default function Transcribe() {
-    return (
-        <div>
-            <h1>Transcribe site</h1>
-        </div>
-    );
+  return (
+    <div>
+      <h1>Transcribe site</h1>
+    </div>
+  );
 }
