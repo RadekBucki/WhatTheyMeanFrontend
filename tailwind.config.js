@@ -11,7 +11,11 @@ module.exports = withMT({
       'teal': '#2EC4B6',
       'bright-pink': '#FF3366',
       'off-white': '#F6F7F8',
-      'selected-blue': '#030027'
+      'selected-blue': '#030027',
+      'yt': '#FF0000',
+      'yt-text': '#282828',
+      'audio': '#2EC4B6',
+      'audio-text': '#151E3F'
     },
     extend: {
       width: {
