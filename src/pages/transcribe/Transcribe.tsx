@@ -98,7 +98,7 @@ export default function Transcribe() {
             <p className={'mb-6'}>
               Example: https://www.youtube.com/watch?v=dQw4w9WgXcQ
             </p>
-            <Input variant='outlined' label='Youtube link'/>
+            <Input variant='outlined' label='Youtube link' crossOrigin={undefined}/>
           </DialogBody>
           <DialogFooter>
             <Button
