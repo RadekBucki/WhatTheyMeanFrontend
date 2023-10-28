@@ -3,6 +3,7 @@ import {Button, Input, Typography} from '@material-tailwind/react';
 import {MagnifyingGlassIcon, TrashIcon} from "@heroicons/react/20/solid";
 
 interface TranscriptData {
+  uid: number,
   name: string,
   start_date: string,
   status: string,
@@ -12,7 +13,7 @@ export default function History() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const transcripts = [
-    {name: 'Transcript 1', status: 'Success', start_date: '2023-04-21 13:45:00', duration: '3 min'}
+    {uid: 1, name: 'Transcript 1', status: 'Success', start_date: '2023-04-21 13:45:00', duration: '3 min'}
   ]
   const handleSearch = () => {
     console.log('Search query:', searchQuery);
@@ -54,8 +55,9 @@ export default function History() {
             </Button>
           </div>
         </div>
+
         <div id="transcripts-list" className="mt-10">
-          <div className="bg-dark-blue rounded py-4 px-6 mb-6">
+          <div className="bg-dark-blue rounded py-4 px-16 mb-6">
             <div className="flex flex-row justify-between items-center">
               <Typography className="text-xl font-bold text-off-white">
                 Name
@@ -69,11 +71,14 @@ export default function History() {
               <Typography className="text-xl font-bold text-off-white">
                 Duration
               </Typography>
+              <Typography className="text-xl font-bold text-off-white mr-20">
+                Options
+              </Typography>
             </div>
           </div>
           { transcripts && transcripts?.map((transcript: TranscriptData) => (
-            <div className="border-2 border-dark-blue rounded p-6">
-              <div className="flex flex-row justify-between items-center">
+            <div key={transcript.uid} className="border-2 border-dark-blue rounded p-6">
+              <div className="flex flex-row justify-between items-center ml-4">
                 <Typography className="text-xl font-bold text-selected-blue">
                   {transcript.name}
                 </Typography>
@@ -87,10 +92,10 @@ export default function History() {
                   {transcript.duration}
                 </Typography>
                 <div>
-                  <Button className="rounded-full bg-teal px-10 mr-10">
+                  <Button className="rounded-full bg-teal px-10 mr-4">
                     View
                   </Button>
-                  <Button className="rounded-full bg-bright-pink px-10">
+                  <Button className="rounded-full bg-bright-pink px-10 mr-2">
                     Delete
                   </Button>
                 </div>
@@ -98,7 +103,8 @@ export default function History() {
             </div>
           ))}
         </div>
+
       </div>
-    </div>
+      </div>
   );
 }
