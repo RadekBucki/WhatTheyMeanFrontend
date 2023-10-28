@@ -11,8 +11,8 @@ export default function Home() {
   const [selectedWindow, setSelectedWindow] = useState(SelectedWindow.Transcribe);
 
   return (
-    <div className={'flex flex-row'}>
-      <Card className="h-[calc(100vh)] max-w-[20rem] p-2 bg-dark-blue rounded-none">
+    <div className={'flex flex-row h-full'}>
+      <Card className="flex-grow min-h-screen max-w-[20rem] p-2 bg-dark-blue rounded-none">
         <div>
           <img src="/src/assets/WTM_Logo-2.png" alt="WhatTheyMean app logo"/>
         </div>
