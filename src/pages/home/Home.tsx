@@ -11,12 +11,16 @@ export default function Home() {
   const [selectedWindow, setSelectedWindow] = useState(SelectedWindow.Transcribe);
 
   return (
-    <div className={'flex flex-row h-full'}>
-      <Card className="flex-grow min-h-screen max-w-[20rem] p-2 bg-dark-blue rounded-none">
-        <div>
-          <img src="/src/assets/WTM_Logo-2.png" alt="WhatTheyMean app logo"/>
+    <div className={'lg:flex lg:flex-row h-full'}>
+      <Card className="flex-grow lg:min-h-screen lg:max-w-[20rem] p-2 bg-dark-blue rounded-none">
+        <div className="flex justify-center">
+          <img
+            src="/src/assets/WTM_Logo-2.png"
+            alt="WhatTheyMean app logo"
+            className=" sm:h-[180px]"
+          />
         </div>
-        <List>
+        <List className="lg:flex lg:flex-col sm:flex-row">
           <ListItem onClick={() => {
             setSelectedWindow(SelectedWindow.Transcribe);
           }} className={`cursor-pointer ${

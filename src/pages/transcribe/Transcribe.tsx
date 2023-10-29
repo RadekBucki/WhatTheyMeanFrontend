@@ -32,7 +32,7 @@ export default function Transcribe() {
 
   return (
     <div>
-      <div className="w-custom p-6 bg-white shadow-md rounded">
+      <div className="lg:w-custom p-6 bg-white shadow-md rounded">
         <Typography className="text-selected-blue font-bold text-2xl">
           Transcribe
         </Typography>
