@@ -42,14 +42,14 @@ export default function Transcribe() {
           Choose audio type
         </Typography>
 
-        <div className={'flex justify-center gap-12 2xl:gap-64  mt-24'}>
-          <Button className={'bg-yt w-4/6 2xl:w-3/12 h-[300px] rounded-3xl flex flex-col justify-center'} style={{ textTransform: 'none' }} onClick={handleOpenYoutubeLinkDialog}>
+        <div className={'flex flex-col xl:flex-row justify-center gap-24 mt-24'}>
+          <Button className={'bg-yt w-full max-w-2xl h-[300px] rounded-3xl flex flex-col justify-center'} style={{ textTransform: 'none' }} onClick={handleOpenYoutubeLinkDialog}>
             <PlayIcon className={'text-white w-24 h-24 mx-auto'}/>
             <Typography className="text-audio-text font-bold text-2xl mt-4 mx-auto">
               Youtube link
             </Typography>
           </Button>
-          <Button className={'bg-audio w-4/6 2xl:w-3/12 h-[300px] rounded-3xl flex flex-col justify-center'}  style={{ textTransform: 'none' }} onClick={handleOpenFileBrowser}>
+          <Button className={'bg-audio w-full max-w-2xl h-[300px] rounded-3xl flex flex-col justify-center'}  style={{ textTransform: 'none' }} onClick={handleOpenFileBrowser}>
             <DocumentMagnifyingGlassIcon className={'text-black w-24 h-24 mx-auto'}/>
             <Typography className="text-audio-text font-bold text-2xl mt-4 mx-auto">
               Audio file (mp3/mp4)
