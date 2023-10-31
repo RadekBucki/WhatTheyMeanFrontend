@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {Button, Input, Typography} from '@material-tailwind/react';
 import {MagnifyingGlassIcon, TrashIcon} from '@heroicons/react/20/solid';
+import Transcription from './transcription/Transcription';
 
-interface TranscriptData {
+export interface TranscriptData {
   uid: number,
   name: string,
   start_date: string,
@@ -12,6 +13,8 @@ interface TranscriptData {
 export default function History() {
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [openTranscriptionDialog, setOpenTranscriptionDialog] = useState(false);
+  const [selectedTranscript, setSelectedTranscript] = useState<TranscriptData | null>(null);
   const transcripts = [
     {uid: 1, name: 'Transcript 1', status: 'Success', start_date: '2023-04-21 13:45:00', duration: '3 min'}
   ];
@@ -21,6 +24,15 @@ export default function History() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+  };
+
+  const handleOpenTranscriptionDialog = (transcript: TranscriptData | null) => {
+    setSelectedTranscript(transcript);
+    setOpenTranscriptionDialog(true);
+  };
+
+  const handleTranscriptionDialog = () => {
+    setOpenTranscriptionDialog(!openTranscriptionDialog);
   };
 
   return (
@@ -78,7 +90,7 @@ export default function History() {
                 </div>
               </div>
               { transcripts && transcripts?.map((transcript: TranscriptData) => (
-                <div key={transcript.uid} className="border-2 border-dark-blue rounded p-6">
+                <div key={transcript.uid} className="border-2 border-dark-blue rounded p-6 mb-4">
                   <div className="flex flex-row justify-between items-center ml-4">
                     <Typography className="text-xl font-bold text-selected-blue">
                       {transcript.name}
@@ -93,7 +105,7 @@ export default function History() {
                       {transcript.duration}
                     </Typography>
                     <div className="sm:flex justify-center items-center">
-                      <Button className="rounded-full bg-teal px-10 mr-4">
+                      <Button className="rounded-full bg-teal px-10 mr-4" onClick={() => handleOpenTranscriptionDialog(transcript)}>
                         View
                       </Button>
                       <Button className="rounded-full bg-bright-pink px-10 mr-2">
@@ -107,6 +119,7 @@ export default function History() {
           </div>
         </div>
       </div>
+      <Transcription open={openTranscriptionDialog} handler={handleTranscriptionDialog} selectedTranscript={selectedTranscript} />
     </div>
   );
 }
