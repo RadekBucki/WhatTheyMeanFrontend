@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Card, List, ListItem, ListItemPrefix, Typography} from '@material-tailwind/react';
-import {DocumentTextIcon} from '@heroicons/react/20/solid';
-import {ChartPieIcon} from '@heroicons/react/20/solid';
+import {DocumentTextIcon, ChartPieIcon} from '@heroicons/react/20/solid';
 import {SelectedWindow} from '../../Enums';
 import Transcribe from '../transcribe/Transcribe';
 import History from '../history/History';
