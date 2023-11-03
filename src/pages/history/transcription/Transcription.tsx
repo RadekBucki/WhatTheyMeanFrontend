@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Dialog, DialogBody, DialogFooter, DialogHeader} from '@material-tailwind/react';
 import {TranscriptData} from '../../../types';
 import {ArrowDownTrayIcon} from '@heroicons/react/24/solid';
-import useTranscriptDataSaver from "../../../hooks/useTranscriptDataSaver";
+import useTranscriptDataSaver from '../../../hooks/useTranscriptDataSaver';
 
 interface TranscriptProps {
   open: boolean;
