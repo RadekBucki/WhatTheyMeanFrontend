@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Dialog, DialogBody, DialogFooter, DialogHeader} from '@material-tailwind/react';
-import {TranscriptData} from '../History';
+import {TranscriptData} from '../../../types';
 import {ArrowDownTrayIcon} from '@heroicons/react/24/solid';
 
 interface TranscriptProps {
