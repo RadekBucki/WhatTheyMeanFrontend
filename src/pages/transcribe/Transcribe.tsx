@@ -15,6 +15,7 @@ import {
   DocumentMagnifyingGlassIcon,
   PlayIcon
 } from '@heroicons/react/24/solid';
+import useTranscriptDataSaver from '../../hooks/useTranscriptDataSaver';
 
 export default function Transcribe() {
 
@@ -29,6 +30,15 @@ export default function Transcribe() {
     setSelectedFile(file);
     selectedFile;
   };
+
+  const transcriptDataSaver = useTranscriptDataSaver();
+  const handleSaveTranscriptData = () => transcriptDataSaver.saveToPdf({
+    uid: 1,
+    name: 'Transcript 1',
+    status: 'Success',
+    start_date: '2023-04-21 13:45:00',
+    duration: '3 min'
+  });
 
   return (
     <div>
@@ -83,7 +93,7 @@ export default function Transcribe() {
             <Button>
               <ClipboardDocumentIcon className={'w-5 h-5'}/>
             </Button>
-            <Button>
+            <Button onClick={handleSaveTranscriptData}>
               <ArrowDownTrayIcon className={'w-5 h-5'}/>
             </Button>
           </div>

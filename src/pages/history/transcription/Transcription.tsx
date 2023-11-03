@@ -2,6 +2,7 @@ import React from 'react';
 import {Button, Dialog, DialogBody, DialogFooter, DialogHeader} from '@material-tailwind/react';
 import {TranscriptData} from '../../../types';
 import {ArrowDownTrayIcon} from '@heroicons/react/24/solid';
+import useTranscriptDataSaver from "../../../hooks/useTranscriptDataSaver";
 
 interface TranscriptProps {
   open: boolean;
@@ -10,6 +11,7 @@ interface TranscriptProps {
 }
 
 const Transcription: React.FC<TranscriptProps> = ({ open, handler, selectedTranscript }) => {
+  const transcriptDataSaver = useTranscriptDataSaver();
   return (
     <div>
       <Dialog size="lg" open={open} handler={handler}>
@@ -35,6 +37,9 @@ const Transcription: React.FC<TranscriptProps> = ({ open, handler, selectedTrans
         <DialogFooter className="flex gap-4 justify-center">
           <Button
             onClick={() => {
+              if (selectedTranscript) {
+                transcriptDataSaver.saveToPdf(selectedTranscript);
+              }
               handler();
             }}
             className="flex items-center gap-2 bg-teal hover:bg-teal px-6"
