@@ -2,14 +2,7 @@ import React, {useState} from 'react';
 import {Button, Input, Typography} from '@material-tailwind/react';
 import {MagnifyingGlassIcon, TrashIcon} from '@heroicons/react/20/solid';
 import Transcription from './transcription/Transcription';
-
-export interface TranscriptData {
-  uid: number,
-  name: string,
-  start_date: string,
-  status: string,
-  duration: string
-}
+import {TranscriptData} from '../../types';
 export default function History() {
 
   const [searchQuery, setSearchQuery] = useState('');
