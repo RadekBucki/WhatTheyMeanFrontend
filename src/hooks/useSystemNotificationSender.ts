@@ -1,4 +1,4 @@
-import {TranscriptData} from "../types";
+import {TranscriptData} from '../types';
 
 export default () => {
   return {
@@ -12,8 +12,8 @@ export default () => {
           lang: 'en',
         });
       } else {
-        alert(`Transcript Status updated: ${transcription.status}.\n\n Please enable notifications in your browser settings.`);
+        alert(`Transcript ${transcription.name} Status updated: ${transcription.status}.\n\n Please enable notifications in your browser settings.`);
       }
     }
   };
-}
+};
