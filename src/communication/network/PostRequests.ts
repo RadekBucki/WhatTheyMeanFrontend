@@ -4,7 +4,9 @@ import {Utils} from "./Utils";
 
 export class PostRequests {
 
-  static postRegisterFile(formData: FormData): Promise<string> {
+  static postRegisterFile(file: File): Promise<string> {
+    const formData = new FormData()
+    formData.append("file", file)
     return api.post(Post.REGISTER_FILE, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',

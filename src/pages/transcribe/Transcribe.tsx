@@ -17,6 +17,8 @@ import {
 } from '@heroicons/react/24/solid';
 import useTranscriptDataSaver from '../../hooks/useTranscriptDataSaver';
 import UseSocketContainer from "../../sockets/UseSocketContainer"
+import SocketHooks from "../../sockets/SocketHooks"
+import {PostRequests} from "../../communication/network/PostRequests";
 
 export default function Transcribe() {
 
@@ -30,6 +32,10 @@ export default function Transcribe() {
   const handleFileSelected = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     setSelectedFile(file);
+    if (file) {
+      PostRequests.postRegisterFile(file)
+      SocketHooks().startAnal("UUID")
+    }
     selectedFile;
   };
 
@@ -83,7 +89,7 @@ export default function Transcribe() {
               Completed
             </Typography>
             <Typography color="blue-gray" variant="h6">
-              {progress}
+              {progress}%
             </Typography>
           </div>
           <Progress value={parseInt(progress)}/>

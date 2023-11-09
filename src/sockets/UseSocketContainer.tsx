@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {socket} from "./Socket";
 
 export const UseSocketContainer: () => { isConnected: boolean; progress: string } = () => {
