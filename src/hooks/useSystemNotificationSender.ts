@@ -7,7 +7,7 @@ export default () => {
     },
     sendSystemNotification: async (transcription: TranscriptData): Promise<void> => {
       if (Notification.permission === 'granted') {
-        const notification = new Notification(`Transcript ${transcription.name} updated`, {
+        new Notification(`Transcript ${transcription.name} updated`, {
           body: `Status: ${transcription.status}`,
           lang: 'en',
         });
