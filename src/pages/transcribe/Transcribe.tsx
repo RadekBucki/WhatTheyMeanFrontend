@@ -33,8 +33,11 @@ export default function Transcribe() {
     const file = e.target.files && e.target.files[0];
     setSelectedFile(file);
     if (file) {
-      PostRequests.postRegisterFile(file)
-      SocketHooks().startAnal("UUID")
+      console.log(file)
+      PostRequests.postRegisterFile(file).then(uuid => {
+        console.log(uuid)
+        SocketHooks().startAnal(uuid.analysis_uuid)
+      })
     }
     selectedFile;
   };

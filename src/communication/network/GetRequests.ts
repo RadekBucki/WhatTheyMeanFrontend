@@ -1,21 +1,20 @@
 import {Get} from "../Endpoints";
 import {api} from "../Config";
 import {Utils} from "./Utils";
+import {Analyse} from "../Types";
 
 
 export class GetRequests {
 
-  static getAnalyze(id: number): Promise<string[]> {
-    return api.get(Get.ANALYZE + id)
-      .then(res => {
-        return res.data;
-      })
+  static getAnalyze(uuid: string): Promise<Analyse> {
+    return api.get(Get.ANALYZE + uuid)
+      .then(Utils.mapResponse<Analyse>)
       .catch(Utils.handleError)
   }
 
-  static getAnalyzeHistory(): Promise<string[]> {
+  static getAnalyzeHistory(): Promise<Analyse[]> {
     return api.get(Get.ANALYZE_HISTORY)
-      .then(Utils.mapResponse<string[]>)
+      .then(Utils.mapResponse<Analyse[]>)
       .catch(Utils.handleError)
   }
 }
