@@ -15,10 +15,11 @@ import {
   DocumentMagnifyingGlassIcon,
   PlayIcon
 } from '@heroicons/react/24/solid';
+import useSocketContainer from "../../sockets/UseSocketContainer"
+import {useSocketHooks} from "../../sockets/SocketHooks"
+import {usePostRequests} from "../../communication/network/PostRequests";
 import useTranscriptDataSaver from '../../hooks/useTranscriptDataSaver';
 import UseSocketContainer from "../../sockets/UseSocketContainer"
-import SocketHooks from "../../sockets/SocketHooks"
-import {PostRequests} from "../../communication/network/PostRequests";
 
 export default function Transcribe() {
 
@@ -33,15 +34,16 @@ export default function Transcribe() {
     const file = e.target.files && e.target.files[0];
     setSelectedFile(file);
     if (file) {
-      console.log(file)
-      PostRequests.postRegisterFile(file).then(uuid => {
-        console.log(uuid)
-        SocketHooks().startAnal(uuid.analysis_uuid)
+      const postHook = usePostRequests()
+      postHook.postRegisterFile(file).then(uuid => {
+        const socket = useSocketHooks()
+        socket.startAnal(uuid.analysis_uuid)
       })
     }
     selectedFile;
   };
 
+  const socketContainer = useSocketContainer()
   const transcriptDataSaver = useTranscriptDataSaver();
   const handleSaveTranscriptData = () => transcriptDataSaver.saveToPdf({
     uid: 1,
@@ -92,10 +94,10 @@ export default function Transcribe() {
               Completed
             </Typography>
             <Typography color="blue-gray" variant="h6">
-              {progress}%
+              {socketContainer.progress}%
             </Typography>
           </div>
-          <Progress value={parseInt(progress)}/>
+          <Progress value={parseInt(socketContainer.progress)}/>
         </div>
 
         <Typography className="text-selected-blue font-bold text-2xl text-center pt-24 pb-6">

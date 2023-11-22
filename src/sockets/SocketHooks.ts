@@ -1,6 +1,10 @@
 import {socket} from "./Socket";
 
-export default () => {
+export interface SocketHook {
+  startAnal: (uuid: string) => void;
+}
+
+export const useSocketHooks = (): SocketHook => {
   const startAnal = (uuid: string): void => {
     socket.emit('analyse', uuid)
   };
@@ -9,3 +13,5 @@ export default () => {
     startAnal
   };
 };
+
+export default useSocketHooks

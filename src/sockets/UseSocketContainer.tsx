@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {socket} from "./Socket";
 
-export const UseSocketContainer: () => { isConnected: boolean; progress: string } = () => {
+export const useSocketContainer: () => { isConnected: boolean; progress: string } = () => {
   const [progress, setProgress] = useState("0");
   const [isConnected, setIsConnected] = useState(socket.connected);
 
@@ -35,4 +35,4 @@ export const UseSocketContainer: () => { isConnected: boolean; progress: string 
   };
 };
 
-export default UseSocketContainer
+export default useSocketContainer

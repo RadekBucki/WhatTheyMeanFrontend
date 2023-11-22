@@ -1,20 +1,35 @@
+import { api } from '../Config';
+import { Utils } from './Utils';
+import { Analyse } from '../Types';
 import {Get} from "../Endpoints";
-import {api} from "../Config";
-import {Utils} from "./Utils";
-import {Analyse} from "../Types";
 
-
-export class GetRequests {
-
-  static getAnalyze(uuid: string): Promise<Analyse> {
-    return api.get(Get.ANALYZE + uuid)
-      .then(Utils.mapResponse<Analyse>)
-      .catch(Utils.handleError)
-  }
-
-  static getAnalyzeHistory(): Promise<Analyse[]> {
-    return api.get(Get.ANALYZE_HISTORY)
-      .then(Utils.mapResponse<Analyse[]>)
-      .catch(Utils.handleError)
-  }
+export interface GetRequestsHook {
+  getAnalyze: (uuid: string) => Promise<Analyse>;
+  getAnalyzeHistory: () => Promise<Analyse[]>;
 }
+
+export const useGetRequests = (): GetRequestsHook => {
+
+  const getAnalyze = async (uuid: string): Promise<Analyse> => {
+    try {
+      const response = await api.get(Get.ANALYZE + uuid);
+      return Utils.mapResponse<Analyse>(response);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getAnalyzeHistory = async (): Promise<Analyse[]> => {
+    try {
+      const response = await api.get(Get.ANALYZE_HISTORY);
+      return Utils.mapResponse<Analyse[]>(response);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  return {
+    getAnalyze,
+    getAnalyzeHistory,
+  };
+};
