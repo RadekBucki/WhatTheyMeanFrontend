@@ -1,4 +1,4 @@
-import {socket} from "./Socket";
+import {socket} from './Socket';
 
 export interface SocketHook {
   startAnal: (uuid: string) => void;
@@ -6,7 +6,7 @@ export interface SocketHook {
 
 export const useSocketHooks = (): SocketHook => {
   const startAnal = (uuid: string): void => {
-    socket.emit('analyse', uuid)
+    socket.emit('analyse', uuid);
   };
 
   return {
@@ -14,4 +14,4 @@ export const useSocketHooks = (): SocketHook => {
   };
 };
 
-export default useSocketHooks
+export default useSocketHooks;

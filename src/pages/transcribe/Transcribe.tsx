@@ -15,11 +15,10 @@ import {
   DocumentMagnifyingGlassIcon,
   PlayIcon
 } from '@heroicons/react/24/solid';
-import useSocketContainer from "../../sockets/UseSocketContainer"
-import {useSocketHooks} from "../../sockets/SocketHooks"
-import {usePostRequests} from "../../communication/network/PostRequests";
+import useSocketContainer from '../../sockets/UseSocketContainer';
+import {useSocketHooks} from '../../sockets/SocketHooks';
+import {usePostRequests} from '../../communication/network/PostRequests';
 import useTranscriptDataSaver from '../../hooks/useTranscriptDataSaver';
-import UseSocketContainer from "../../sockets/UseSocketContainer"
 
 export default function Transcribe() {
 
@@ -34,16 +33,16 @@ export default function Transcribe() {
     const file = e.target.files && e.target.files[0];
     setSelectedFile(file);
     if (file) {
-      const postHook = usePostRequests()
+      const postHook = usePostRequests();
       postHook.postRegisterFile(file).then(uuid => {
-        const socket = useSocketHooks()
-        socket.startAnal(uuid.analysis_uuid)
-      })
+        const socket = useSocketHooks();
+        socket.startAnal(uuid.analysis_uuid);
+      });
     }
     selectedFile;
   };
 
-  const socketContainer = useSocketContainer()
+  const socketContainer = useSocketContainer();
   const transcriptDataSaver = useTranscriptDataSaver();
   const handleSaveTranscriptData = () => transcriptDataSaver.saveToPdf({
     uid: 1,
@@ -52,8 +51,6 @@ export default function Transcribe() {
     start_date: '2023-04-21 13:45:00',
     duration: '3 min'
   });
-
-  const progress = UseSocketContainer().progress
 
   return (
     <div>
@@ -69,14 +66,14 @@ export default function Transcribe() {
 
         <div className={'flex flex-col xl:flex-row justify-center gap-24 mt-24'}>
           <Button className={'bg-yt w-full max-w-2xl h-[300px] rounded-3xl flex flex-col justify-center'}
-                  style={{textTransform: 'none'}} onClick={handleOpenYoutubeLinkDialog}>
+            style={{textTransform: 'none'}} onClick={handleOpenYoutubeLinkDialog}>
             <PlayIcon className={'text-white w-24 h-24 mx-auto'}/>
             <Typography className="text-audio-text font-bold text-2xl mt-4 mx-auto">
               Youtube link
             </Typography>
           </Button>
           <Button className={'bg-audio w-full max-w-2xl h-[300px] rounded-3xl flex flex-col justify-center'}
-                  style={{textTransform: 'none'}} onClick={handleOpenFileBrowser}>
+            style={{textTransform: 'none'}} onClick={handleOpenFileBrowser}>
             <DocumentMagnifyingGlassIcon className={'text-black w-24 h-24 mx-auto'}/>
             <Typography className="text-audio-text font-bold text-2xl mt-4 mx-auto">
               Audio file (mp3/mp4)

@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {socket} from "./Socket";
+import {useState, useEffect} from 'react';
+import {socket} from './Socket';
 
 export const useSocketContainer: () => { isConnected: boolean; progress: string } = () => {
-  const [progress, setProgress] = useState("0");
+  const [progress, setProgress] = useState('0');
   const [isConnected, setIsConnected] = useState(socket.connected);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export const useSocketContainer: () => { isConnected: boolean; progress: string 
 
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
-    socket.on("progress", onProgress);
+    socket.on('progress', onProgress);
 
     return () => {
       socket.off('connect', onConnect);
@@ -35,4 +35,4 @@ export const useSocketContainer: () => { isConnected: boolean; progress: string 
   };
 };
 
-export default useSocketContainer
+export default useSocketContainer;
