@@ -8,6 +8,9 @@ import {BrowserRouter} from 'react-router-dom';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+console.log(import.meta.env.VITE_TEST)
+
 root.render(
   <React.StrictMode>
     <BrowserRouter>
