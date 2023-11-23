@@ -1,6 +1,7 @@
 import { act } from '@testing-library/react';
 import useSystemNotificationSender from '../../src/hooks/useSystemNotificationSender';
 import {TranscriptData} from "../../src/types";
+import {Analyse} from "../../src/communication/Types";
 
 class MockNotification {
     get options(): NotificationOptions | undefined {
@@ -48,20 +49,24 @@ describe('useSystemNotificationSender', () => {
 
         MockNotification.permission = 'granted';
 
-
-        const mockTranscription: TranscriptData = {
-            uid: 1,
-            name: '1',
-            status: 'Success',
-            start_date: '2023-04-21 13:45:00',
-            duration: '3 min',
+        const mockAnalyse: Analyse = {
+          name: '1',
+          start_date: '2023-04-21 13:45:00',
+          finish_date: '2023-04-21 13:48:00',
+          status: 'Success',
+          file_type: 'mp4',
+          link: 'https://www.youtube.com/watch?v=1',
+          raw_file: 'base64',
+          full_transcription: 'Full transcription',
+          video_summary: 'Video summary',
+          author_attitude: 'Author attitude',
         };
 
         await act(async () => {
-            await sendSystemNotification(mockTranscription);
+            await sendSystemNotification(mockAnalyse);
         });
 
-        expect(MockNotification.instance.title).toEqual('Transcript 1 updated');
+        expect(MockNotification.instance.title).toEqual('Analyse 1 updated');
         expect(MockNotification.instance.options).toEqual({
             body: 'Status: Success',
             lang: 'en',
@@ -75,20 +80,25 @@ describe('useSystemNotificationSender', () => {
 
         globalThis.alert = jest.fn();
 
-        const mockTranscription: TranscriptData = {
-            uid: 1,
-            name: '1',
-            status: 'Success',
-            start_date: '2023-04-21 13:45:00',
-            duration: '3 min',
-        };
+      const mockAnalyse: Analyse = {
+        name: '1',
+        start_date: '2023-04-21 13:45:00',
+        finish_date: '2023-04-21 13:48:00',
+        status: 'Success',
+        file_type: 'mp4',
+        link: 'https://www.youtube.com/watch?v=1',
+        raw_file: 'base64',
+        full_transcription: 'Full transcription',
+        video_summary: 'Video summary',
+        author_attitude: 'Author attitude',
+      };
 
-        await act(async () => {
-            await sendSystemNotification(mockTranscription);
-        });
+      await act(async () => {
+        await sendSystemNotification(mockAnalyse);
+      });
 
         expect(globalThis.alert).toHaveBeenCalledWith(
-            'Transcript 1 Status updated: Success.\n\n Please enable notifications in your browser settings.'
+            'Analyse 1 Status updated: Success.\n\n Please enable notifications in your browser settings.'
         );
     });
 });
