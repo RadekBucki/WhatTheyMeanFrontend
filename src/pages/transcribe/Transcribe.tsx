@@ -27,13 +27,13 @@ export default function Transcribe() {
   const handleOpenFileBrowser = () => {
     document.getElementById('fileInput')?.click();
   };
+  const postHook = usePostRequests();
+  const socket = useSocketHooks();
   const handleFileSelected = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     setSelectedFile(file);
     if (file) {
-      const postHook = usePostRequests();
       postHook.postRegisterFile(file).then(uuid => {
-        const socket = useSocketHooks();
         socket.startAnal(uuid.analysis_uuid);
       });
     }
