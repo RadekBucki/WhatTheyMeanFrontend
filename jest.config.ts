@@ -11,7 +11,6 @@ const config: Config.InitialOptions = {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy', // Handle CSS files
   },
   transform: {
-    // '^.+\\.(ts|tsx)$': 'ts-jest', // Handle TypeScript files
     '^.+\\.(ts|tsx)$': [
       'ts-jest',
       {
