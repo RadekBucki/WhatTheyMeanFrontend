@@ -1,5 +1,5 @@
 import {jsPDF} from 'jspdf';
-import {Analyse} from "../communication/Types";
+import {Analyse} from '../communication/Types';
 
 export default () => {
   return {
