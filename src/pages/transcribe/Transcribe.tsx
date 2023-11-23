@@ -15,9 +15,13 @@ import {
   DocumentMagnifyingGlassIcon,
   PlayIcon
 } from '@heroicons/react/24/solid';
+import useSocketContainer from '../../sockets/UseSocketContainer';
+import {useSocketHooks} from '../../sockets/SocketHooks';
+import {usePostRequests} from '../../communication/network/PostRequests';
 import useTranscriptDataSaver from '../../hooks/useTranscriptDataSaver';
 
 export default function Transcribe() {
+
 
   const [openYoutubeLinkDialog, setOpenYoutubeLinkDialog] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -28,9 +32,17 @@ export default function Transcribe() {
   const handleFileSelected = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     setSelectedFile(file);
+    if (file) {
+      const postHook = usePostRequests();
+      postHook.postRegisterFile(file).then(uuid => {
+        const socket = useSocketHooks();
+        socket.startAnal(uuid.analysis_uuid);
+      });
+    }
     selectedFile;
   };
 
+  const socketContainer = useSocketContainer();
   const transcriptDataSaver = useTranscriptDataSaver();
   const handleSaveTranscriptData = () => transcriptDataSaver.saveToPdf({
     uid: 1,
@@ -53,13 +65,15 @@ export default function Transcribe() {
         </Typography>
 
         <div className={'flex flex-col xl:flex-row justify-center gap-24 mt-24'}>
-          <Button className={'bg-yt w-full max-w-2xl h-[300px] rounded-3xl flex flex-col justify-center'} style={{ textTransform: 'none' }} onClick={handleOpenYoutubeLinkDialog}>
+          <Button className={'bg-yt w-full max-w-2xl h-[300px] rounded-3xl flex flex-col justify-center'}
+            style={{textTransform: 'none'}} onClick={handleOpenYoutubeLinkDialog}>
             <PlayIcon className={'text-white w-24 h-24 mx-auto'}/>
             <Typography className="text-audio-text font-bold text-2xl mt-4 mx-auto">
               Youtube link
             </Typography>
           </Button>
-          <Button className={'bg-audio w-full max-w-2xl h-[300px] rounded-3xl flex flex-col justify-center'}  style={{ textTransform: 'none' }} onClick={handleOpenFileBrowser}>
+          <Button className={'bg-audio w-full max-w-2xl h-[300px] rounded-3xl flex flex-col justify-center'}
+            style={{textTransform: 'none'}} onClick={handleOpenFileBrowser}>
             <DocumentMagnifyingGlassIcon className={'text-black w-24 h-24 mx-auto'}/>
             <Typography className="text-audio-text font-bold text-2xl mt-4 mx-auto">
               Audio file (mp3/mp4)
@@ -77,10 +91,10 @@ export default function Transcribe() {
               Completed
             </Typography>
             <Typography color="blue-gray" variant="h6">
-              50%
+              {socketContainer.progress}%
             </Typography>
           </div>
-          <Progress value={50} />
+          <Progress value={parseInt(socketContainer.progress)}/>
         </div>
 
         <Typography className="text-selected-blue font-bold text-2xl text-center pt-24 pb-6">
@@ -88,7 +102,7 @@ export default function Transcribe() {
         </Typography>
 
         <div className="w-full px-12 2xl:px-64 flex flex-col items-end gap-2">
-          <Textarea label="Message" disabled value={'Your analysis will appear here'} />
+          <Textarea label="Message" disabled value={'Your analysis will appear here'}/>
           <div className={'flex gap-5'}>
             <Button>
               <ClipboardDocumentIcon className={'w-5 h-5'}/>
@@ -128,7 +142,7 @@ export default function Transcribe() {
           id='fileInput'
           type='file'
           accept='.mp3,.mp4'
-          style={{ display: 'none' }}
+          style={{display: 'none'}}
           onChange={handleFileSelected}
         />
       </div>

@@ -6,7 +6,7 @@
       "dom.iterable",
       "esnext"
     ],
-    "types": ["vite/client", "jest", "@testing-library/jest-dom"],
+    "types": ["vite/client", "jest", "@testing-library/jest-dom", "node"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
