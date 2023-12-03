@@ -14,14 +14,15 @@ import {
   ClipboardDocumentIcon,
   DocumentMagnifyingGlassIcon, GlobeAltIcon
 } from '@heroicons/react/24/solid';
-import useSocketContainer from '../../sockets/UseSocketContainer';
+import {SocketContainerInterface} from '../../sockets/UseSocketContainer';
 import {useSocketHooks} from '../../sockets/SocketHooks';
-import {usePostRequests} from '../../communication/network/PostRequests';
+import {PostRequestHookInterface} from '../../communication/network/PostRequests';
 import useAnalyseDataSaver from '../../hooks/useAnalyseDataSaver';
-import {useGetRequests} from '../../communication/network/GetRequests';
+import {GetRequestHookInterface} from '../../communication/network/GetRequests';
 import {Analyse} from '../../communication/Types';
 
-export default function Transcribe() {
+export default function Transcribe({ post, get, socketContainer }: PostRequestHookInterface & GetRequestHookInterface & SocketContainerInterface) {
+
   const [openWebLinkDialog, setOpenWebLinkDialog] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isTranscribing, setIsTranscribing] = useState<boolean>(false);
@@ -42,7 +43,7 @@ export default function Transcribe() {
     setOpenWebLinkDialog(!openWebLinkDialog);
     setIsTranscribing(true);
 
-    postHook.postRegisterUrl(webLink).then(uuid => {
+    post.postRegisterUrl(webLink).then(uuid => {
       setCurrentAnalysisID(uuid.analysis_uuid);
       socket.startAnal(uuid.analysis_uuid);
     });
@@ -50,22 +51,21 @@ export default function Transcribe() {
 
   useEffect(() => {
     if (socketContainer.progress === '100') {
-      useGetRequests().getAnalyze(currentAnalysisID).then(res => {
+      get.getAnalyze(currentAnalysisID).then(res => {
         setCurrentAnalysisResult(res);
       });
     }
-  }, [useSocketContainer().progress]);
+  }, [socketContainer.progress]);
 
   const handleOpenFileBrowser = () => {
     document.getElementById('fileInput')?.click();
   };
-  const postHook = usePostRequests();
   const socket = useSocketHooks();
   const handleFileSelected = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     setSelectedFile(file);
     if (file) {
-      postHook.postRegisterFile(file).then(uuid => {
+      post.postRegisterFile(file).then(uuid => {
         socket.startAnal(uuid.analysis_uuid);
       });
     }
@@ -76,7 +76,6 @@ export default function Transcribe() {
     navigator.clipboard.writeText(currentAnalysisResult?.video_summary as string);
   };
 
-  const socketContainer = useSocketContainer();
   const analyseDataSaver = useAnalyseDataSaver();
   const handleSaveTranscriptData = () => analyseDataSaver.saveToPdf({
     name: currentAnalysisResult?.name as string,
@@ -111,7 +110,7 @@ export default function Transcribe() {
               Youtube link or TikTok link
             </Typography>
           </Button>
-          <Button className={'bg-audio w-full max-w-2xl h-[300px] rounded-3xl flex flex-col justify-center'}
+          <Button data-testid="fileButton" className={'bg-audio w-full max-w-2xl h-[300px] rounded-3xl flex flex-col justify-center'}
             style={{textTransform: 'none'}} onClick={handleOpenFileBrowser}>
             <DocumentMagnifyingGlassIcon className={'text-black w-24 h-24 mx-auto'}/>
             <Typography className="text-audio-text font-bold text-2xl mt-4 mx-auto">

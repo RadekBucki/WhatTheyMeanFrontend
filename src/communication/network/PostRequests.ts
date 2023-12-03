@@ -3,6 +3,10 @@ import {Utils} from './Utils';
 import {AnalyseResponse} from '../Types';
 import {Post} from '../Endpoints';
 
+export interface PostRequestHookInterface {
+  post: PostRequestsHook
+}
+
 export interface PostRequestsHook {
   postRegisterFile: (file: File) => Promise<AnalyseResponse>;
   postRegisterUrl: (url: string) => Promise<AnalyseResponse>;

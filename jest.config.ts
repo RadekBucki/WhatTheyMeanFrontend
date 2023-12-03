@@ -4,7 +4,7 @@ const config: Config.InitialOptions = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
   testEnvironmentOptions: {
-    url: 'http://127.0.0.1:5000'
+    url: 'https://www.url.com'
   },
   testTimeout: 20000,
   setupFilesAfterEnv: [
@@ -28,7 +28,7 @@ const config: Config.InitialOptions = {
               options: {
                 metaObjectReplacement: {
                   env: {
-                    VITE_BASE_COMMUNICATION_URL: 'http://127.0.0.1:5000'
+                    VITE_BASE_COMMUNICATION_URL: 'https://www.url.com'
                   }
                 }
               }
