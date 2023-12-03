@@ -6,6 +6,7 @@ import {PostRequestsHook} from "../../src/communication/network/PostRequests";
 import {BrowserRouter} from "react-router-dom";
 import App from "../../src/App";
 import {SocketContainer} from "../../src/sockets/UseSocketContainer";
+import {MockNotification} from "../hooks/UseSystemNotificationSender.test";
 
 export const useGetRequestsMock = (): GetRequestsHook => {
 
@@ -79,7 +80,7 @@ export const usePostRequestsMock = (): PostRequestsHook => {
   };
 }
 
-export const socketContainerMock: () => SocketContainer = () => {
+export const useSocketContainerMock: () => SocketContainer = () => {
   const progress = '100'
   const isConnected = true
 
@@ -89,12 +90,15 @@ export const socketContainerMock: () => SocketContainer = () => {
   };
 }
 
+globalThis.Notification = MockNotification as any;
+
 test('gets transcription by url', async () => {
   render(
     <BrowserRouter>
-      <App get={useGetRequestsMock()} post={usePostRequestsMock()} socketContainer={socketContainerMock()}/>
+      <App get={useGetRequestsMock()} post={usePostRequestsMock()} socketContainer={useSocketContainerMock()}/>
     </BrowserRouter>
   );
+
 
   const linkButton = screen.getByTestId('webLinkButton');
   fireEvent.click(linkButton);

@@ -2,7 +2,8 @@ import {render, screen} from '@testing-library/react';
 import App from '../src/App';
 import {BrowserRouter} from "react-router-dom";
 import React from "react";
-import {useGetRequestsMock, usePostRequestsMock} from "./transcribe/TranscribePage.test";
+import {useSocketContainerMock, useGetRequestsMock, usePostRequestsMock} from "./transcribe/TranscribePage.test";
+import useSocketContainer from "../src/sockets/UseSocketContainer";
 
 const mockJsPDF = {
   setFillColor: jest.fn(),
@@ -22,7 +23,7 @@ jest.mock('jspdf', () => {
 test('renders transcribe page', () => {
   render(
       <BrowserRouter>
-        <App  get={useGetRequestsMock()} post={usePostRequestsMock()}/>
+        <App  get={useGetRequestsMock()} post={usePostRequestsMock()} socketContainer={useSocketContainerMock()}/>
       </BrowserRouter>
   );
   const linkElement = screen.getByText(/Choose audio type/i);
