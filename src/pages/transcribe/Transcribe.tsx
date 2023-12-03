@@ -20,6 +20,8 @@ import {PostRequestHookInterface} from '../../communication/network/PostRequests
 import useAnalyseDataSaver from '../../hooks/useAnalyseDataSaver';
 import {GetRequestHookInterface} from '../../communication/network/GetRequests';
 import {Analyse} from '../../communication/Types';
+import useSentimentIdsRepository from '../../hooks/useSentimentIdsRepository';
+import useSystemNotificationSender from '../../hooks/useSystemNotificationSender';
 
 export default function Transcribe({ post, get, socketContainer }: PostRequestHookInterface & GetRequestHookInterface & SocketContainerInterface) {
 
@@ -30,7 +32,19 @@ export default function Transcribe({ post, get, socketContainer }: PostRequestHo
   const [showError, setShowError] = useState<boolean>(false);
   const [currentAnalysisID, setCurrentAnalysisID] = useState<string>('');
   const [currentAnalysisResult, setCurrentAnalysisResult] = useState<Analyse | null>(null);
+
+  const analyseDataSaver = useAnalyseDataSaver();
+  const systemNotificationSender =  useSystemNotificationSender();
+  const sentimentIdsRepository = useSentimentIdsRepository();
+
   const handleOpenWebLinkDialog = () => setOpenWebLinkDialog(!openWebLinkDialog);
+
+  const handlePreAnalysis = (analysisUUID: string) => {
+    systemNotificationSender.requestPermission();
+    sentimentIdsRepository.add(analysisUUID);
+    setCurrentAnalysisID(analysisUUID);
+    socket.startAnal(analysisUUID);
+  };
 
   const handleConfirmWebLinkDialog = () => {
     setShowError(false);
@@ -44,14 +58,15 @@ export default function Transcribe({ post, get, socketContainer }: PostRequestHo
     setIsTranscribing(true);
 
     post.postRegisterUrl(webLink).then(uuid => {
-      setCurrentAnalysisID(uuid.analysis_uuid);
-      socket.startAnal(uuid.analysis_uuid);
+      handlePreAnalysis(uuid.analysis_uuid);
     });
   };
 
   useEffect(() => {
     if (socketContainer.progress === '100') {
+
       get.getAnalyze(currentAnalysisID).then(res => {
+        useSystemNotificationSender().sendSystemNotification(res);
         setCurrentAnalysisResult(res);
       });
     }
@@ -66,7 +81,7 @@ export default function Transcribe({ post, get, socketContainer }: PostRequestHo
     setSelectedFile(file);
     if (file) {
       post.postRegisterFile(file).then(uuid => {
-        socket.startAnal(uuid.analysis_uuid);
+        handlePreAnalysis(uuid.analysis_uuid);
       });
     }
     selectedFile;
@@ -75,20 +90,7 @@ export default function Transcribe({ post, get, socketContainer }: PostRequestHo
   const handleCopy = () => {
     navigator.clipboard.writeText(currentAnalysisResult?.video_summary as string);
   };
-
-  const analyseDataSaver = useAnalyseDataSaver();
-  const handleSaveTranscriptData = () => analyseDataSaver.saveToPdf({
-    name: currentAnalysisResult?.name as string,
-    start_date: currentAnalysisResult?.start_date as string,
-    finish_date: currentAnalysisResult?.finish_date as string,
-    status: currentAnalysisResult?.status as string,
-    file_type: currentAnalysisResult?.file_type as string,
-    link: currentAnalysisResult?.link as string,
-    raw_file: currentAnalysisResult?.raw_file as string,
-    full_transcription: currentAnalysisResult?.full_transcription as string,
-    video_summary: currentAnalysisResult?.video_summary as string,
-    author_attitude: currentAnalysisResult?.author_attitude as string,
-  });
+  const handleSaveTranscriptData = () => analyseDataSaver.saveToPdf(currentAnalysisResult as Analyse);
 
   return (
     <div>
