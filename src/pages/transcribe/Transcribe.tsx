@@ -66,7 +66,7 @@ export default function Transcribe({ post, get, socketContainer }: PostRequestHo
     if (socketContainer.progress === '100') {
 
       get.getAnalyze(currentAnalysisID).then(res => {
-        useSystemNotificationSender().sendSystemNotification(res);
+        systemNotificationSender.sendSystemNotification(res);
         setCurrentAnalysisResult(res);
       });
     }
