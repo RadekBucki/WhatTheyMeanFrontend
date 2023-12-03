@@ -1,15 +1,18 @@
-import {TranscriptData} from '../types';
 import {jsPDF} from 'jspdf';
+import {Analyse} from '../communication/Types';
 
 export default () => {
   return {
-    saveToPdf: (transcript: TranscriptData): void => {
+    saveToPdf: (analyse: Analyse): void => {
       const pdfContent: string = `
-                Transcript Details:
-                Name: ${transcript.name}
-                Start Date: ${transcript.start_date}
-                Status: ${transcript.status}
-                Duration: ${transcript.duration}
+                Analyse Details:
+                Name: ${analyse.name}
+                Start date: ${analyse.start_date}
+                Finish date: ${analyse.finish_date}
+                Status: ${analyse.status}
+                Full transcription: ${analyse.full_transcription}
+                Video summary: ${analyse.video_summary}
+                Author attitude: ${analyse.author_attitude}
             `;
 
       const pdf = new jsPDF();
@@ -21,7 +24,7 @@ export default () => {
 
       const fileChooser = document.createElement('a');
       fileChooser.href = 'data:application/pdf;base64,' + btoa(pdf.output());
-      fileChooser.download = 'transcript.pdf';
+      fileChooser.download = 'analyse.pdf';
       fileChooser.click();
     }
   };

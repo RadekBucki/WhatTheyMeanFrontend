@@ -1,18 +1,19 @@
-import {TranscriptData} from '../types';
+
+import {Analyse} from '../communication/Types';
 
 export default () => {
   return {
     requestPermission: async (): Promise<void> => {
       await Notification.requestPermission();
     },
-    sendSystemNotification: async (transcription: TranscriptData): Promise<void> => {
+    sendSystemNotification: async (analyse: Analyse): Promise<void> => {
       if (Notification.permission === 'granted') {
-        new Notification(`Transcript ${transcription.name} updated`, {
-          body: `Status: ${transcription.status}`,
+        new Notification(`Analyse ${analyse.name} updated`, {
+          body: `Status: ${analyse.status}`,
           lang: 'en',
         });
       } else {
-        alert(`Transcript ${transcription.name} Status updated: ${transcription.status}.\n\n Please enable notifications in your browser settings.`);
+        alert(`Analyse ${analyse.name} Status updated: ${analyse.status}.\n\n Please enable notifications in your browser settings.`);
       }
     }
   };

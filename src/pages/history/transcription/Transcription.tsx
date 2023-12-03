@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Dialog, DialogBody, DialogFooter, DialogHeader} from '@material-tailwind/react';
 import {TranscriptData} from '../../../types';
 import {ArrowDownTrayIcon} from '@heroicons/react/24/solid';
-import useTranscriptDataSaver from '../../../hooks/useTranscriptDataSaver';
+import useAnalyseDataSaver from '../../../hooks/useAnalyseDataSaver';
 
 interface TranscriptProps {
   open: boolean;
@@ -11,7 +11,7 @@ interface TranscriptProps {
 }
 
 const Transcription: React.FC<TranscriptProps> = ({ open, handler, selectedTranscript }) => {
-  const transcriptDataSaver = useTranscriptDataSaver();
+  const analyseDataSaver = useAnalyseDataSaver();
   return (
     <div>
       <Dialog size="lg" open={open} handler={handler}>
@@ -38,7 +38,18 @@ const Transcription: React.FC<TranscriptProps> = ({ open, handler, selectedTrans
           <Button
             onClick={() => {
               if (selectedTranscript) {
-                transcriptDataSaver.saveToPdf(selectedTranscript);
+                analyseDataSaver.saveToPdf({
+                  name: 'Analyse 1',
+                  start_date: '2023-04-21 13:45:00',
+                  finish_date: '2023-04-21 13:48:00',
+                  status: 'Success',
+                  file_type: 'mp4',
+                  link: 'https://www.youtube.com/watch?v=1',
+                  raw_file: 'base64',
+                  full_transcription: 'Full transcription',
+                  video_summary: 'Video summary',
+                  author_attitude: 'Author attitude',
+                });
               }
               handler();
             }}

@@ -18,24 +18,22 @@ import {
 import useSocketContainer from '../../sockets/UseSocketContainer';
 import {useSocketHooks} from '../../sockets/SocketHooks';
 import {usePostRequests} from '../../communication/network/PostRequests';
-import useTranscriptDataSaver from '../../hooks/useTranscriptDataSaver';
+import useAnalyseDataSaver from '../../hooks/useAnalyseDataSaver';
 
 export default function Transcribe() {
-
-
   const [openYoutubeLinkDialog, setOpenYoutubeLinkDialog] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const handleOpenYoutubeLinkDialog = () => setOpenYoutubeLinkDialog(!openYoutubeLinkDialog);
   const handleOpenFileBrowser = () => {
     document.getElementById('fileInput')?.click();
   };
+  const postHook = usePostRequests();
+  const socket = useSocketHooks();
   const handleFileSelected = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     setSelectedFile(file);
     if (file) {
-      const postHook = usePostRequests();
       postHook.postRegisterFile(file).then(uuid => {
-        const socket = useSocketHooks();
         socket.startAnal(uuid.analysis_uuid);
       });
     }
@@ -43,13 +41,18 @@ export default function Transcribe() {
   };
 
   const socketContainer = useSocketContainer();
-  const transcriptDataSaver = useTranscriptDataSaver();
-  const handleSaveTranscriptData = () => transcriptDataSaver.saveToPdf({
-    uid: 1,
-    name: 'Transcript 1',
-    status: 'Success',
+  const analyseDataSaver = useAnalyseDataSaver();
+  const handleSaveTranscriptData = () => analyseDataSaver.saveToPdf({
+    name: 'Analyse 1',
     start_date: '2023-04-21 13:45:00',
-    duration: '3 min'
+    finish_date: '2023-04-21 13:48:00',
+    status: 'Success',
+    file_type: 'mp4',
+    link: 'https://www.youtube.com/watch?v=1',
+    raw_file: 'base64',
+    full_transcription: 'Full transcription',
+    video_summary: 'Video summary',
+    author_attitude: 'Author attitude',
   });
 
   return (
