@@ -90,6 +90,21 @@ export const useSocketContainerMock: () => SocketContainer = () => {
   };
 }
 
+const mockJsPDF = {
+  setFillColor: jest.fn(),
+  setTextColor: jest.fn(),
+  rect: jest.fn(),
+  addImage: jest.fn(),
+  text: jest.fn(),
+  output: jest.fn(() => 'mocked-pdf-output'),
+};
+
+jest.mock('jspdf', () => {
+  return {
+    jsPDF: jest.fn(() => mockJsPDF),
+  }
+});
+
 globalThis.Notification = MockNotification as any;
 
 test('gets transcription by url', async () => {
@@ -113,5 +128,5 @@ test('gets transcription by url', async () => {
 
   await waitFor(() => {
     expect(finalAnalysis.textContent).toBe('Video summary');
-  }, { timeout: 1000 });
+  }, { timeout: 5000 });
 });

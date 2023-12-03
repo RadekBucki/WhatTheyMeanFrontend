@@ -3,7 +3,7 @@ import App from '../src/App';
 import {BrowserRouter} from "react-router-dom";
 import React from "react";
 import {useSocketContainerMock, useGetRequestsMock, usePostRequestsMock} from "./transcribe/TranscribePage.test";
-import useSocketContainer from "../src/sockets/UseSocketContainer";
+import {MockNotification} from "./hooks/UseSystemNotificationSender.test";
 
 const mockJsPDF = {
   setFillColor: jest.fn(),
@@ -19,6 +19,8 @@ jest.mock('jspdf', () => {
     jsPDF: jest.fn(() => mockJsPDF),
   }
 });
+
+globalThis.Notification = MockNotification as any;
 
 test('renders transcribe page', () => {
   render(

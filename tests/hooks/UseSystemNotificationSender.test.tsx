@@ -3,7 +3,7 @@ import useSystemNotificationSender from '../../src/hooks/useSystemNotificationSe
 import {TranscriptData} from "../../src/types";
 import {Analyse} from "../../src/communication/Types";
 
-class MockNotification {
+export class MockNotification {
     get options(): NotificationOptions | undefined {
         return this._options;
     }
