@@ -104,7 +104,7 @@ export default function Transcribe() {
         </Typography>
 
         <div className={'flex flex-col xl:flex-row justify-center gap-24 mt-24'}>
-          <Button className={'bg-dark-blue w-full max-w-2xl h-[300px] rounded-3xl flex flex-col justify-center'}
+          <Button data-testid="webLinkButton" className={'bg-dark-blue w-full max-w-2xl h-[300px] rounded-3xl flex flex-col justify-center'}
             style={{textTransform: 'none'}} onClick={handleOpenWebLinkDialog}>
             <GlobeAltIcon className={'text-white w-24 h-24 mx-auto'}/>
             <Typography className="text-white font-bold text-2xl mt-4 mx-auto">
@@ -131,7 +131,7 @@ export default function Transcribe() {
                 <Typography color="blue-gray" variant="h6">
                     Completed
                 </Typography>
-                <Typography color="blue-gray" variant="h6">
+                <Typography data-testid="progress" color="blue-gray" variant="h6">
                   {socketContainer.progress}%
                 </Typography>
               </div>
@@ -146,7 +146,7 @@ export default function Transcribe() {
                 Analysis
             </Typography>
             <div className="w-full px-12 2xl:px-64 flex flex-col items-end gap-2">
-              <Textarea label="Message" disabled value={currentAnalysisResult?.video_summary}/>
+              <Textarea data-testid="finalAnalysis" label="Message" disabled value={currentAnalysisResult?.video_summary}/>
               <div className={'flex gap-5'}>
                 <Button>
                   <ClipboardDocumentIcon onClick={handleCopy} className={'w-5 h-5'}/>
@@ -168,7 +168,7 @@ export default function Transcribe() {
             <p className={'mb-6'}>
               Example: https://www.youtube.com/watch?v=dQw4w9WgXcQ or https://www.tiktok.com/@dzidzia_dziadzia/video/7271698811439828256
             </p>
-            <Input error={showError} value={webLink} onChange={(event) => { setWebLink(event.target.value); }} variant='outlined' label='Youtube link or TikTok link' crossOrigin={undefined}/>
+            <Input data-testid="webLinkInput" error={showError} value={webLink} onChange={(event) => { setWebLink(event.target.value); }} variant='outlined' label='Youtube link or TikTok link' crossOrigin={undefined}/>
           </DialogBody>
           <DialogFooter>
             <Button
@@ -179,7 +179,7 @@ export default function Transcribe() {
             >
               <span>Cancel</span>
             </Button>
-            <Button variant="gradient" color="green" onClick={handleConfirmWebLinkDialog}>
+            <Button data-testid="confirmButton" variant="gradient" color="green" onClick={handleConfirmWebLinkDialog}>
               <span>Confirm</span>
             </Button>
           </DialogFooter>
