@@ -4,8 +4,11 @@ import {DocumentTextIcon, ChartPieIcon} from '@heroicons/react/20/solid';
 import {SelectedWindow} from '../../Enums';
 import Transcribe from '../transcribe/Transcribe';
 import History from '../history/History';
+import {PostRequestHookInterface} from '../../communication/network/PostRequests';
+import {GetRequestHookInterface} from '../../communication/network/GetRequests';
+import {SocketContainerInterface} from '../../sockets/UseSocketContainer';
 
-export default function Home() {
+export default function Home({ post, get, socketContainer }: PostRequestHookInterface & GetRequestHookInterface & SocketContainerInterface) {
 
   const [selectedWindow, setSelectedWindow] = useState(SelectedWindow.Transcribe);
 
@@ -50,7 +53,7 @@ export default function Home() {
       <div>
         {
           selectedWindow === SelectedWindow.Transcribe
-          && <Transcribe/>
+          && <Transcribe get={get} post={post} socketContainer={socketContainer}/>
 
           || selectedWindow === SelectedWindow.History
           && <History/>

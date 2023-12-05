@@ -3,6 +3,10 @@ import type {Config} from '@jest/types';
 const config: Config.InitialOptions = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
+  testEnvironmentOptions: {
+    url: 'https://www.url.com'
+  },
+  testTimeout: 20000,
   setupFilesAfterEnv: [
     '<rootDir>/tests/setupTests.ts'
   ],

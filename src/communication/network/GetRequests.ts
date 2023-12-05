@@ -3,6 +3,10 @@ import { Utils } from './Utils';
 import { Analyse } from '../Types';
 import {Get} from '../Endpoints';
 
+export interface GetRequestHookInterface {
+  get: GetRequestsHook
+}
+
 export interface GetRequestsHook {
   getAnalyze: (uuid: string) => Promise<Analyse>;
   getAnalyzeHistory: (uuid: string[]) => Promise<Analyse[]>;
