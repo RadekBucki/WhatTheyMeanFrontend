@@ -56,7 +56,7 @@ export default function Home({ post, get, socketContainer }: PostRequestHookInte
           && <Transcribe get={get} post={post} socketContainer={socketContainer}/>
 
           || selectedWindow === SelectedWindow.History
-          && <History/>
+          && <History get={get}/>
         }
       </div>
     </div>

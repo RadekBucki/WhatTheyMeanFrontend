@@ -12,6 +12,7 @@ export const useGetRequestsMock = (): GetRequestsHook => {
 
   const getAnalyze = jest.fn(async (uuid: string): Promise<Analyse> => {
     return {
+      uuid: uuid,
       name: 'Analyse 1',
       start_date: '2023-04-21 13:45:00',
       finish_date: '2023-04-21 13:48:00',
@@ -28,6 +29,7 @@ export const useGetRequestsMock = (): GetRequestsHook => {
   const getAnalyzeHistory = jest.fn(async (): Promise<Analyse[]> => {
     return [
       {
+        uuid: '2',
         name: 'Analyse 1',
         start_date: '2023-04-21 13:45:00',
         finish_date: '2023-04-21 13:48:00',
@@ -40,6 +42,7 @@ export const useGetRequestsMock = (): GetRequestsHook => {
         author_attitude: 'Author attitude',
       },
       {
+        uuid: '3',
         name: 'Analyse 2',
         start_date: '2023-04-21 13:45:00',
         finish_date: '2023-04-21 13:48:00',

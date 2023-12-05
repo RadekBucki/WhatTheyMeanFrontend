@@ -1,6 +1,5 @@
 import { act } from '@testing-library/react';
 import useSystemNotificationSender from '../../src/hooks/useSystemNotificationSender';
-import {TranscriptData} from "../../src/types";
 import {Analyse} from "../../src/communication/Types";
 
 export class MockNotification {
@@ -50,6 +49,7 @@ describe('useSystemNotificationSender', () => {
         MockNotification.permission = 'granted';
 
         const mockAnalyse: Analyse = {
+          uuid: '1',
           name: '1',
           start_date: '2023-04-21 13:45:00',
           finish_date: '2023-04-21 13:48:00',
@@ -81,6 +81,7 @@ describe('useSystemNotificationSender', () => {
         globalThis.alert = jest.fn();
 
       const mockAnalyse: Analyse = {
+        uuid: '2',
         name: '1',
         start_date: '2023-04-21 13:45:00',
         finish_date: '2023-04-21 13:48:00',

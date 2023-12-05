@@ -9,7 +9,7 @@ export interface GetRequestHookInterface {
 
 export interface GetRequestsHook {
   getAnalyze: (uuid: string) => Promise<Analyse>;
-  getAnalyzeHistory: () => Promise<Analyse[]>;
+  getAnalyzeHistory: (uuids: string[]) => Promise<Analyse[]>;
 }
 
 export const useGetRequests = (): GetRequestsHook => {
@@ -19,8 +19,10 @@ export const useGetRequests = (): GetRequestsHook => {
     return Utils.mapResponse<Analyse>(response);
   };
 
-  const getAnalyzeHistory = async (): Promise<Analyse[]> => {
-    const response = await api.get(Get.ANALYZE_HISTORY);
+  const getAnalyzeHistory = async (content: string[]): Promise<Analyse[]> => {
+    const serializedUuids = content.join(',');
+    const response = await api.get(`${Get.ANALYZE_HISTORY}?uuids=${serializedUuids}`);
+
     return Utils.mapResponse<Analyse[]>(response);
   };
 

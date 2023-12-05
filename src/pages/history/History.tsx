@@ -1,16 +1,25 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Input, Typography} from '@material-tailwind/react';
-import {MagnifyingGlassIcon, TrashIcon} from '@heroicons/react/20/solid';
+import {MagnifyingGlassIcon} from '@heroicons/react/20/solid';
 import Transcription from './transcription/Transcription';
-import {TranscriptData} from '../../types';
-export default function History() {
+import useSentimentIdsRepository from '../../hooks/useSentimentIdsRepository';
+import {GetRequestHookInterface} from '../../communication/network/GetRequests';
+import {Analyse} from '../../communication/Types';
+
+export default function History({ get }: GetRequestHookInterface) {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [openTranscriptionDialog, setOpenTranscriptionDialog] = useState(false);
-  const [selectedTranscript, setSelectedTranscript] = useState<TranscriptData | null>(null);
-  const transcripts = [
-    {uid: 1, name: 'Transcript 1', status: 'Success', start_date: '2023-04-21 13:45:00', duration: '3 min'}
-  ];
+  const [selectedTranscript, setSelectedTranscript] = useState<Analyse | null>(null);
+
+  const [transcripts, setTranscripts] = useState<Analyse[]>([]);
+  const sentimentIdsRepository = useSentimentIdsRepository();
+  const sessionUuids = sentimentIdsRepository.getAll();
+
+  useEffect(() => {
+    get.getAnalyzeHistory(sessionUuids).then(res => setTranscripts(res));
+  }, []);
+
   const handleSearch = () => {
     console.log('Search query:', searchQuery);
   };
@@ -19,7 +28,19 @@ export default function History() {
     setSearchQuery(e.target.value);
   };
 
-  const handleOpenTranscriptionDialog = (transcript: TranscriptData | null) => {
+  const filteredTranscripts = transcripts?.filter((transcript: Analyse) => {
+    return (
+      transcript.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      transcript.author_attitude.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      transcript.file_type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      transcript.full_transcription.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      transcript.start_date.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      transcript.finish_date.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      transcript.status.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
+
+  const handleOpenTranscriptionDialog = (transcript: Analyse | null) => {
     setSelectedTranscript(transcript);
     setOpenTranscriptionDialog(true);
   };
@@ -36,8 +57,8 @@ export default function History() {
         </Typography>
       </div>
       <div className="p-10 sm:p-4">
-        <div id="search-clear" className="flex flex-col lg:flex-row lg:justify-between gap-4 items-center">
-          <div className="flex flex-row items-center lg:w-1/2 gap-6">
+        <div id="search-clear" className="flex flex-col lg:flex-row lg:justify-between gap-4 items-center mt-4">
+          <div className="flex flex-row items-center w-full lg:w-1/2 gap-6">
             <div className="w-full">
               <Input
                 variant="outlined"
@@ -51,57 +72,49 @@ export default function History() {
               <MagnifyingGlassIcon className="h-5 w-5 text-off-white"/>
             </Button>
           </div>
-          <div className="flex flex-row justify-center items-center gap-6">
-            <Typography className="text-selected-blue text-2xl font-bold">
-              Clear history
-            </Typography>
-            <Button className="rounded-full bg-bright-pink">
-              <TrashIcon className="h-5 w-5 text-off-white"/>
-            </Button>
-          </div>
         </div>
-        <div className="overflow-x-scroll lg:overflow-x-hidden">
+        <div className="overflow-x-scroll xl:overflow-x-hidden">
           <div className="min-w-[800px] my-2">
-            <div id="transcripts-list" className="mt-10">
+            <div id="transcripts-list" className="mt-8">
               <div className="bg-dark-blue rounded py-4 px-16 mb-6">
                 <div className="flex flex-row justify-between items-center">
-                  <Typography className="text-xl font-bold text-off-white">
+                  <Typography className="text-xl font-bold text-off-white flex-1">
                     Name
                   </Typography>
-                  <Typography className="text-xl font-bold text-off-white">
+                  <Typography className="text-xl font-bold text-off-white flex-1">
                     Status
                   </Typography>
-                  <Typography className="text-xl font-bold text-off-white">
+                  <Typography className="text-xl font-bold text-off-white flex-1">
                     Start date
                   </Typography>
-                  <Typography className="text-xl font-bold text-off-white">
-                    Duration
+                  <Typography className="text-xl font-bold text-off-white flex-1">
+                    Finish date
                   </Typography>
-                  <Typography className="text-xl font-bold text-off-white mr-20">
+                  <Typography className="text-xl font-bold text-off-white flex-1 text-center">
                     Options
                   </Typography>
                 </div>
               </div>
-              { transcripts && transcripts?.map((transcript: TranscriptData) => (
-                <div key={transcript.uid} className="border-2 border-dark-blue rounded p-6 mb-4">
-                  <div className="flex flex-row justify-between items-center ml-4">
-                    <Typography className="text-xl font-bold text-selected-blue">
-                      {transcript.name}
+              {filteredTranscripts && filteredTranscripts.map((transcript: Analyse) => (
+                <div key={transcript.uuid} className="border-2 border-dark-blue rounded p-6 mb-4">
+                  <div className="flex flex-row justify-between items-center ">
+                    <Typography variant="h5" className="text-xl font-bold text-selected-blue flex-1 ml-6">
+                      <p>{transcript.name}</p>
                     </Typography>
-                    <Typography className="text-xl font-bold text-selected-blue">
-                      {transcript.status}
+                    <Typography variant="h5" className="text-xl font-bold text-selected-blue flex-1">
+                      <p>{transcript.status}</p>
                     </Typography>
-                    <Typography className="text-xl font-bold text-selected-blue">
-                      {transcript.start_date}
+                    <Typography variant="h5" className="text-xl font-bold text-selected-blue flex-1">
+                      <p>{transcript.start_date}</p>
                     </Typography>
-                    <Typography className="text-xl font-bold text-selected-blue">
-                      {transcript.duration}
+                    <Typography variant="h5" className="text-xl font-bold text-selected-blue flex-1">
+                      <p>{transcript.finish_date}</p>
                     </Typography>
-                    <div className="sm:flex justify-center items-center">
-                      <Button className="rounded-full bg-teal px-10 mr-4" onClick={() => handleOpenTranscriptionDialog(transcript)}>
+                    <div className="flex justify-center items-center flex-1 mr-6 lg:mr-0 flex-col lg:flex-row gap-4">
+                      <Button className="rounded-full bg-teal px-10" onClick={() => handleOpenTranscriptionDialog(transcript)}>
                         View
                       </Button>
-                      <Button className="rounded-full bg-bright-pink px-10 mr-2">
+                      <Button className="rounded-full bg-bright-pink px-8" onClick={() => useSentimentIdsRepository().remove(transcript.uuid)}>
                         Delete
                       </Button>
                     </div>
