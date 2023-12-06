@@ -19,8 +19,8 @@ export const useGetRequests = (): GetRequestsHook => {
     return Utils.mapResponse<Analyse>(response);
   };
 
-  const getAnalyzeHistory = async (content: string[]): Promise<Analyse[]> => {
-    const serializedUuids = content.join(',');
+  const getAnalyzeHistory = async (uuids: string[]): Promise<Analyse[]> => {
+    const serializedUuids = uuids.join(',');
     const response = await api.get(`${Get.ANALYZE_HISTORY}?uuids=${serializedUuids}`);
 
     return Utils.mapResponse<Analyse[]>(response);
