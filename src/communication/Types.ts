@@ -1,4 +1,5 @@
 export interface Analyse {
+  uuid: string;
   name: string;
   start_date: string;
   finish_date: string;

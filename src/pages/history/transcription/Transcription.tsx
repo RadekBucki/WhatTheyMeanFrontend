@@ -1,13 +1,13 @@
 import React from 'react';
 import {Button, Dialog, DialogBody, DialogFooter, DialogHeader} from '@material-tailwind/react';
-import {TranscriptData} from '../../../types';
 import {ArrowDownTrayIcon} from '@heroicons/react/24/solid';
 import useAnalyseDataSaver from '../../../hooks/useAnalyseDataSaver';
+import {Analyse} from '../../../communication/Types';
 
 interface TranscriptProps {
   open: boolean;
   handler: () => void;
-  selectedTranscript: TranscriptData | null;
+  selectedTranscript: Analyse | null;
 }
 
 const Transcription: React.FC<TranscriptProps> = ({ open, handler, selectedTranscript }) => {
@@ -16,20 +16,41 @@ const Transcription: React.FC<TranscriptProps> = ({ open, handler, selectedTrans
     <div>
       <Dialog size="lg" open={open} handler={handler}>
         <DialogHeader className="text-3xl justify-center">History - {selectedTranscript?.name}</DialogHeader>
-        <DialogBody className="text-xl text-selected-blue">
+        <DialogBody className="text-xl text-selected-blue overflow-y-auto" style={{maxHeight: '600px'}}>
           <div className="flex flex-col md:flex-row items-center gap-4 px-4">
             <div className={'w-3/4'}>
               <p className="mb-6">
                 <span className="font-semibold">Start date:</span> {selectedTranscript?.start_date}
               </p>
+              <p className="mb-6">
+                <span className="font-semibold">Finish date:</span> {selectedTranscript?.finish_date}
+              </p>
               <p className={'mb-6'}>
                 <span className="font-semibold">Status:</span> {selectedTranscript?.status}
               </p>
               <p className={'mb-6'}>
-                <span className="font-semibold">Duration:</span> {selectedTranscript?.duration}
+                <span className="font-semibold">Author Attitude:</span> {selectedTranscript?.author_attitude === 'neu' ? (
+                  <span>Neutral</span>
+                ) : selectedTranscript?.author_attitude === 'pos' ? (
+                  <span>Positive</span>
+                ) : selectedTranscript?.author_attitude === 'neg' ? (
+                  <span>Negative</span>
+                ) : (
+                  <span>Unknown</span>
+                )}
+              </p>
+              <p className={'mb-6'}>
+                <span className="font-semibold">File type:</span> {selectedTranscript?.file_type}
+              </p>
+              <p className={'mb-6'}>
+                <span className="font-semibold">{selectedTranscript?.video_summary?.substring(0, 8)}</span>
+                {selectedTranscript?.video_summary?.substring(8)}
+              </p>
+              <p className={'mb-6'}>
+                <span className="font-semibold">Transcription:</span> {selectedTranscript?.full_transcription}
               </p>
             </div>
-            <div className="w-2/3">
+            <div className="w-full px-2 lg:w-2/3 lg:px-0">
               <img className={'rounded-xl'} alt="Audio board image" src="https://images.unsplash.com/photo-1525022340574-113732565927?auto=format&fit=crop&q=80&w=2050&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"/>
             </div>
           </div>
@@ -38,18 +59,7 @@ const Transcription: React.FC<TranscriptProps> = ({ open, handler, selectedTrans
           <Button
             onClick={() => {
               if (selectedTranscript) {
-                analyseDataSaver.saveToPdf({
-                  name: 'Analyse 1',
-                  start_date: '2023-04-21 13:45:00',
-                  finish_date: '2023-04-21 13:48:00',
-                  status: 'Success',
-                  file_type: 'mp4',
-                  link: 'https://www.youtube.com/watch?v=1',
-                  raw_file: 'base64',
-                  full_transcription: 'Full transcription',
-                  video_summary: 'Video summary',
-                  author_attitude: 'Author attitude',
-                });
+                analyseDataSaver.saveToPdf(selectedTranscript);
               }
               handler();
             }}
