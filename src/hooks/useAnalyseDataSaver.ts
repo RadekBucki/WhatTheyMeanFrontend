@@ -4,16 +4,24 @@ import {Analyse} from '../communication/Types';
 export default () => {
   return {
     saveToPdf: (analyse: Analyse): void => {
-      const pdfContent: string = `
-                Analyse Details:
-                Name: ${analyse.name}
-                Start date: ${analyse.start_date}
-                Finish date: ${analyse.finish_date}
-                Status: ${analyse.status}
-                Full transcription: ${analyse.full_transcription}
-                Video summary: ${analyse.video_summary}
-                Author attitude: ${analyse.author_attitude}
-            `;
+      const attributes : {[key: string]: string} = {
+        'Name': analyse.name,
+        'Start date': analyse.start_date,
+        'Finish date': analyse.finish_date,
+        'Status': analyse.status,
+        'Full transcription': analyse.full_transcription,
+        'Video summary': analyse.video_summary,
+        'Author attitude': analyse.author_attitude,
+      };
+      let pdfContent: string = 'Analyse Details:\n';
+      Object.keys(attributes).forEach((key: string) => {
+        let attributeLines: string = key + ': ' + attributes[key];
+
+        // break line after first space after 62 characters
+        attributeLines = attributeLines.replace(/(.{62}) /g, '$1\n');
+
+        pdfContent = pdfContent.concat(attributeLines + '\n');
+      });
 
       const pdf = new jsPDF();
       pdf.setFillColor('#151E3F');
