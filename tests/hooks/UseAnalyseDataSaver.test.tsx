@@ -59,6 +59,7 @@ describe('useTranscriptDataSaver', () => {
 
   it('should save transcript data to PDF with breaklines if attribute + label has more than 62 characters', () => {
     const mockAnalyse: Analyse = {
+      uuid: '1',
       name: 'Analyse 1',
       start_date: '2023-04-21 13:45:00',
       finish_date: '2023-04-21 13:48:00',
