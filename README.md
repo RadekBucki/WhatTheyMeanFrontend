@@ -7,5 +7,8 @@
 | Backend+AI                          | https://github.com/RadekBucki/WhatTheyMeanBackend  |
 
 ## Read before start
-- [Code style and quality](CODE.md)
-- [Application setup](SETUP.md)
+- [Code style and quality](docs/CODE.md)
+- [Application setup](docs/SETUP.md)
+
+## Documentation
+- [Hooks](docs/HOOKS.md)
