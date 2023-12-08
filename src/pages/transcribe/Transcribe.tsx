@@ -92,11 +92,11 @@ export default function Transcribe({ post, get, socketContainer }: PostRequestHo
       post.postRegisterFile(file).then(uuid => {
         handlePreAnalysis(uuid.analysis_uuid);
       }).catch(err => {
-        console.log(err)
         setShowServerError(true);
         setServerErrorDesc(err.data);
       });
     }
+    selectedFile;
   };
 
   const handleCopy = () => {
@@ -209,7 +209,7 @@ export default function Transcribe({ post, get, socketContainer }: PostRequestHo
           style={{display: 'none'}}
           onChange={handleFileSelected}/>
 
-      </div>  
+      </div>
     </div>
   );
 }

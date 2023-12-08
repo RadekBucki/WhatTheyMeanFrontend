@@ -40,7 +40,7 @@ export const useSocketContainer: () => SocketContainer = () => {
   }, []);
 
   function resetSockets() {
-    setProgress('0')
+    setProgress('0');
   }
 
   return {
