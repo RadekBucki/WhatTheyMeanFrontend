@@ -67,7 +67,7 @@ export default function Transcribe({ post, get, socketContainer }: PostRequestHo
       handlePreAnalysis(uuid.analysis_uuid);
     }).catch(err => {
       setShowServerError(true);
-      setServerErrorDesc(err.data);
+      setServerErrorDesc(err.response.data.message);
     });
   };
 
@@ -94,7 +94,7 @@ export default function Transcribe({ post, get, socketContainer }: PostRequestHo
         handlePreAnalysis(uuid.analysis_uuid);
       }).catch(err => {
         setShowServerError(true);
-        setServerErrorDesc(err.data);
+        setServerErrorDesc(err.response.data.message);
       });
     }
     selectedFile;
