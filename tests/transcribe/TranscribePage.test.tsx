@@ -86,10 +86,12 @@ export const usePostRequestsMock = (): PostRequestsHook => {
 export const useSocketContainerMock: () => SocketContainer = () => {
   const progress = '100'
   const isConnected = true
+  const resetSockets = () => {}
 
   return {
     isConnected,
-    progress
+    progress,
+    resetSockets
   };
 }
 
