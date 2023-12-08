@@ -43,6 +43,7 @@ export default function Transcribe({ post, get, socketContainer }: PostRequestHo
   const handleOpenWebLinkDialog = () => setOpenWebLinkDialog(!openWebLinkDialog);
 
   const handlePreAnalysis = (analysisUUID: string) => {
+    setIsTranscribing(true);
     setShowServerError(false);
     setServerErrorDesc('');
     socketContainer.resetSockets();
@@ -61,7 +62,6 @@ export default function Transcribe({ post, get, socketContainer }: PostRequestHo
     }
 
     setOpenWebLinkDialog(!openWebLinkDialog);
-    setIsTranscribing(true);
 
     post.postRegisterUrl(webLink).then(uuid => {
       handlePreAnalysis(uuid.analysis_uuid);
