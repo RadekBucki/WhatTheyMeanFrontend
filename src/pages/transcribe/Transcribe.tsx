@@ -22,6 +22,7 @@ import {GetRequestHookInterface} from '../../communication/network/GetRequests';
 import {Analyse} from '../../communication/Types';
 import useSentimentIdsRepository from '../../hooks/useSentimentIdsRepository';
 import useSystemNotificationSender from '../../hooks/useSystemNotificationSender';
+import ErrorLabel from '../../components/ErrorLabel';
 
 export default function Transcribe({ post, get, socketContainer }: PostRequestHookInterface & GetRequestHookInterface & SocketContainerInterface) {
 
@@ -134,9 +135,7 @@ export default function Transcribe({ post, get, socketContainer }: PostRequestHo
         </div>
 
         { showServerError &&
-            <Typography className="text-red-500 font-bold text-2xl text-center pt-24 pb-4">
-                Error: {serverErrorDesc}
-            </Typography>
+          <ErrorLabel errorDesc={serverErrorDesc}/>
         }
 
         { isTranscribing && !showServerError &&
