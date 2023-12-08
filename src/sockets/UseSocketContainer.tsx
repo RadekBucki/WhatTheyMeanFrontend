@@ -8,6 +8,7 @@ export interface SocketContainerInterface {
 export interface SocketContainer {
   isConnected: boolean;
   progress: string;
+  resetSockets: () => void;
 }
 
 export const useSocketContainer: () => SocketContainer = () => {
@@ -38,9 +39,14 @@ export const useSocketContainer: () => SocketContainer = () => {
     };
   }, []);
 
+  function resetSockets() {
+    setProgress('0')
+  }
+
   return {
     isConnected,
-    progress
+    progress,
+    resetSockets
   };
 };
 
