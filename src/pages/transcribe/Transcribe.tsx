@@ -22,6 +22,7 @@ import {GetRequestHookInterface} from '../../communication/network/GetRequests';
 import {Analyse} from '../../communication/Types';
 import useSentimentIdsRepository from '../../hooks/useSentimentIdsRepository';
 import useSystemNotificationSender from '../../hooks/useSystemNotificationSender';
+import ErrorLabel from '../../components/ErrorLabel';
 
 export default function Transcribe({ post, get, socketContainer }: PostRequestHookInterface & GetRequestHookInterface & SocketContainerInterface) {
 
@@ -30,6 +31,8 @@ export default function Transcribe({ post, get, socketContainer }: PostRequestHo
   const [isTranscribing, setIsTranscribing] = useState<boolean>(false);
   const [webLink, setWebLink] = useState<string>('');
   const [showError, setShowError] = useState<boolean>(false);
+  const [showServerError, setShowServerError] = useState<boolean>(false);
+  const [serverErrorDesc, setServerErrorDesc] = useState<string>('');
   const [currentAnalysisID, setCurrentAnalysisID] = useState<string>('');
   const [currentAnalysisResult, setCurrentAnalysisResult] = useState<Analyse | null>(null);
 
@@ -40,6 +43,9 @@ export default function Transcribe({ post, get, socketContainer }: PostRequestHo
   const handleOpenWebLinkDialog = () => setOpenWebLinkDialog(!openWebLinkDialog);
 
   const handlePreAnalysis = (analysisUUID: string) => {
+    setShowServerError(false);
+    setServerErrorDesc('');
+    socketContainer.resetSockets();
     systemNotificationSender.requestPermission();
     sentimentIdsRepository.add(analysisUUID);
     setCurrentAnalysisID(analysisUUID);
@@ -59,6 +65,9 @@ export default function Transcribe({ post, get, socketContainer }: PostRequestHo
 
     post.postRegisterUrl(webLink).then(uuid => {
       handlePreAnalysis(uuid.analysis_uuid);
+    }).catch(err => {
+      setShowServerError(true);
+      setServerErrorDesc(err.data);
     });
   };
 
@@ -77,11 +86,15 @@ export default function Transcribe({ post, get, socketContainer }: PostRequestHo
   };
   const socket = useSocketHooks();
   const handleFileSelected = (e: ChangeEvent<HTMLInputElement>) => {
+
     const file = e.target.files && e.target.files[0];
     setSelectedFile(file);
     if (file) {
       post.postRegisterFile(file).then(uuid => {
         handlePreAnalysis(uuid.analysis_uuid);
+      }).catch(err => {
+        setShowServerError(true);
+        setServerErrorDesc(err.data);
       });
     }
     selectedFile;
@@ -121,7 +134,11 @@ export default function Transcribe({ post, get, socketContainer }: PostRequestHo
           </Button>
         </div>
 
-        { isTranscribing &&
+        { showServerError &&
+          <ErrorLabel errorDesc={serverErrorDesc}/>
+        }
+
+        { isTranscribing && !showServerError &&
           <>
             <Typography className="text-selected-blue font-bold text-2xl text-center pt-24 pb-4">
                 Progress
