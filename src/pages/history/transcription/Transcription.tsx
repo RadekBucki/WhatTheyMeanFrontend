@@ -16,7 +16,7 @@ const Transcription: React.FC<TranscriptProps> = ({ open, handler, selectedTrans
     <div>
       <Dialog size="lg" open={open} handler={handler}>
         <DialogHeader className="text-3xl justify-center">History - {selectedTranscript?.name}</DialogHeader>
-        <DialogBody className="text-xl text-selected-blue overflow-y-auto" style={{maxHeight: '600px'}}>
+        <DialogBody className="text-xl text-selected-blue overflow-y-auto" style={{maxHeight: '60vh'}}>
           <div className="flex flex-col md:flex-row items-center gap-4 px-4">
             <div className={'w-3/4'}>
               <p className="mb-6">
@@ -29,22 +29,13 @@ const Transcription: React.FC<TranscriptProps> = ({ open, handler, selectedTrans
                 <span className="font-semibold">Status:</span> {selectedTranscript?.status}
               </p>
               <p className={'mb-6'}>
-                <span className="font-semibold">Author Attitude:</span> {selectedTranscript?.author_attitude === 'neu' ? (
-                  <span>Neutral</span>
-                ) : selectedTranscript?.author_attitude === 'pos' ? (
-                  <span>Positive</span>
-                ) : selectedTranscript?.author_attitude === 'neg' ? (
-                  <span>Negative</span>
-                ) : (
-                  <span>Unknown</span>
-                )}
+                <span className="font-semibold">Author Attitude:</span> {selectedTranscript?.author_attitude}
               </p>
               <p className={'mb-6'}>
                 <span className="font-semibold">File type:</span> {selectedTranscript?.file_type}
               </p>
               <p className={'mb-6'}>
-                <span className="font-semibold">{selectedTranscript?.video_summary?.substring(0, 8)}</span>
-                {selectedTranscript?.video_summary?.substring(8)}
+                <span className="font-semibold">Summary:</span> {selectedTranscript?.video_summary}
               </p>
               <p className={'mb-6'}>
                 <span className="font-semibold">Transcription:</span> {selectedTranscript?.full_transcription}
