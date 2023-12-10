@@ -8,6 +8,10 @@ import {MockNotification} from "./hooks/UseSystemNotificationSender.test";
 const mockJsPDF = {
   setFillColor: jest.fn(),
   setTextColor: jest.fn(),
+  getLineHeight: jest.fn(() => 18.4),
+  splitTextToSize: jest.fn((text: string, width: number) => {
+    return text.match(/.{1,62}(\s|$)/g);
+  }),
   rect: jest.fn(),
   addImage: jest.fn(),
   text: jest.fn(),
