@@ -11,7 +11,6 @@ export default function History({ get }: GetRequestHookInterface) {
   const [searchQuery, setSearchQuery] = useState('');
   const [openTranscriptionDialog, setOpenTranscriptionDialog] = useState(false);
   const [selectedTranscript, setSelectedTranscript] = useState<Analyse | null>(null);
-
   const [transcripts, setTranscripts] = useState<Analyse[]>([]);
   const sentimentIdsRepository = useSentimentIdsRepository();
   const sessionUuids = sentimentIdsRepository.getAll();
@@ -20,23 +19,30 @@ export default function History({ get }: GetRequestHookInterface) {
     get.getAnalyzeHistory(sessionUuids).then(res => setTranscripts(res));
   }, []);
 
-  const handleSearch = () => {
-    console.log('Search query:', searchQuery);
-  };
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
+    const query = e.target.value;
+    setSearchQuery(query);
   };
 
   const filteredTranscripts = transcripts?.filter((transcript: Analyse) => {
+    const name = transcript.name ? transcript.name.toLowerCase() : '';
+    const startDate = transcript.start_date ? transcript.start_date.toLowerCase() : '';
+    const finishDate = transcript.finish_date ? transcript.finish_date.toLowerCase() : '';
+    const status = transcript.status ? transcript.status.toLowerCase() : '';
+    const authorAttitude = transcript.author_attitude ? transcript.author_attitude.toLowerCase() : '';
+    const fileType = transcript.file_type ? transcript.file_type.toLowerCase() : '';
+    const summary = transcript.video_summary ? transcript.video_summary.toLowerCase() : '';
+    const transcription = transcript.full_transcription ? transcript.full_transcription.toLowerCase() : '';
+
     return (
-      transcript.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      transcript.author_attitude.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      transcript.file_type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      transcript.full_transcription.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      transcript.start_date.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      transcript.finish_date.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      transcript.status.toLowerCase().includes(searchQuery.toLowerCase())
+      name.includes(searchQuery.toLowerCase()) ||
+      startDate.includes(searchQuery.toLowerCase()) ||
+      finishDate.includes(searchQuery.toLowerCase()) ||
+      status.includes(searchQuery.toLowerCase()) ||
+      authorAttitude.includes(searchQuery.toLowerCase()) ||
+      fileType.includes(searchQuery.toLowerCase()) ||
+      summary.includes(searchQuery.toLowerCase()) ||
+      transcription.includes(searchQuery.toLowerCase())
     );
   });
 
@@ -48,6 +54,14 @@ export default function History({ get }: GetRequestHookInterface) {
   const handleTranscriptionDialog = () => {
     setOpenTranscriptionDialog(!openTranscriptionDialog);
   };
+
+  function deleteTranscript(uuid: string) {
+    setTranscripts((prevTranscripts) =>
+      prevTranscripts.filter((transcript) => transcript.uuid !== uuid)
+    );
+
+    sentimentIdsRepository.remove(uuid);
+  }
 
   return (
     <div>
@@ -68,8 +82,8 @@ export default function History({ get }: GetRequestHookInterface) {
                 onChange={handleInputChange}
               />
             </div>
-            <Button className="rounded-full bg-teal" onClick={handleSearch}>
-              <MagnifyingGlassIcon className="h-5 w-5 text-off-white"/>
+            <Button className="rounded-full bg-teal" onClick={() => setSearchQuery(searchQuery)}>
+              <MagnifyingGlassIcon className="h-5 w-5 text-off-white" />
             </Button>
           </div>
         </div>
@@ -114,7 +128,7 @@ export default function History({ get }: GetRequestHookInterface) {
                       <Button className="rounded-full bg-teal px-10" onClick={() => handleOpenTranscriptionDialog(transcript)}>
                         View
                       </Button>
-                      <Button className="rounded-full bg-bright-pink px-8" onClick={() => useSentimentIdsRepository().remove(transcript.uuid)}>
+                      <Button className="rounded-full bg-bright-pink px-8" onClick={() => deleteTranscript(transcript.uuid)}>
                         Delete
                       </Button>
                     </div>

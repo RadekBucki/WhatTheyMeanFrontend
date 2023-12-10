@@ -20,6 +20,10 @@ export const useGetRequests = (): GetRequestsHook => {
   };
 
   const getAnalyzeHistory = async (uuids: string[]): Promise<Analyse[]> => {
+    if (uuids.length === 0) {
+      return [];
+    }
+
     const serializedUuids = uuids.join(',');
     const response = await api.get(`${Get.ANALYZE_HISTORY}?uuids=${serializedUuids}`);
 
